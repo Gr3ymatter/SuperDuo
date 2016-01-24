@@ -10,6 +10,8 @@ import android.view.ViewGroup;
 
 public class About extends Fragment {
 
+    //Testing GitHub Commits
+
     public About(){
 
     }
