@@ -22,6 +22,9 @@ import it.jaschke.alexandria.api.Callback;
 
 public class MainActivity extends ActionBarActivity implements NavigationDrawerFragment.NavigationDrawerCallbacks, Callback {
 
+
+
+
     /**
      * Fragment managing the behaviors, interactions and presentation of the navigation drawer.
      */
@@ -37,6 +40,9 @@ public class MainActivity extends ActionBarActivity implements NavigationDrawerF
     public static final String MESSAGE_EVENT = "MESSAGE_EVENT";
     public static final String MESSAGE_KEY = "MESSAGE_EXTRA";
 
+    public static final String NETWORK_NOT_FOUND_KEY = "NETWORK_NOT_FOUND_EXTRA";
+    public static final String NETWORK_NOT_FOUND_EVENT = "NETWORK_NOT_FOUND_EVENT";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -48,7 +54,11 @@ public class MainActivity extends ActionBarActivity implements NavigationDrawerF
         }
 
         messageReciever = new MessageReciever();
-        IntentFilter filter = new IntentFilter(MESSAGE_EVENT);
+        IntentFilter filter = new IntentFilter();
+
+        filter.addAction(NETWORK_NOT_FOUND_EVENT);
+        filter.addAction(MESSAGE_EVENT);
+
         LocalBroadcastManager.getInstance(this).registerReceiver(messageReciever,filter);
 
         navigationDrawerFragment = (NavigationDrawerFragment)
@@ -154,8 +164,11 @@ public class MainActivity extends ActionBarActivity implements NavigationDrawerF
     private class MessageReciever extends BroadcastReceiver {
         @Override
         public void onReceive(Context context, Intent intent) {
-            if(intent.getStringExtra(MESSAGE_KEY)!=null){
+            if(intent.getAction().equals(MainActivity.MESSAGE_EVENT)){
                 Toast.makeText(MainActivity.this, intent.getStringExtra(MESSAGE_KEY), Toast.LENGTH_LONG).show();
+            }
+            if(intent.getAction().equals(MainActivity.NETWORK_NOT_FOUND_EVENT)){
+                Toast.makeText(MainActivity.this, intent.getStringExtra(NETWORK_NOT_FOUND_KEY),Toast.LENGTH_LONG).show();
             }
         }
     }

@@ -10,7 +10,11 @@ import android.view.ViewGroup;
 
 public class About extends Fragment {
 
-    //Testing GitHub Commits
+    /**
+    Customer Feedback:
+     1) Cannot Scan Books (Library Implementation)
+     2) Crashes without internet connection (Error Handling)
+     **/
 
     public About(){
 

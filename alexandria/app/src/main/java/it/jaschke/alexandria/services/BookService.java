@@ -4,6 +4,8 @@ import android.app.IntentService;
 import android.content.ContentValues;
 import android.content.Intent;
 import android.database.Cursor;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.net.Uri;
 import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
@@ -48,7 +50,8 @@ public class BookService extends IntentService {
             final String action = intent.getAction();
             if (FETCH_BOOK.equals(action)) {
                 final String ean = intent.getStringExtra(EAN);
-                fetchBook(ean);
+                if(ean != null)                                         //Error Checking to avoid null pointer.
+                    fetchBook(ean);
             } else if (DELETE_BOOK.equals(action)) {
                 final String ean = intent.getStringExtra(EAN);
                 deleteBook(ean);
@@ -85,7 +88,7 @@ public class BookService extends IntentService {
         );
 
         if(bookEntry.getCount()>0){
-            bookEntry.close();
+            bookEntry.close(); //If book is already present then dont do anything.
             return;
         }
 
@@ -107,42 +110,52 @@ public class BookService extends IntentService {
 
             URL url = new URL(builtUri.toString());
 
-            urlConnection = (HttpURLConnection) url.openConnection();
-            urlConnection.setRequestMethod("GET");
-            urlConnection.connect();
+            if (isNetworkAvailable()) {
 
-            InputStream inputStream = urlConnection.getInputStream();
-            StringBuffer buffer = new StringBuffer();
-            if (inputStream == null) {
-                return;
-            }
+                urlConnection = (HttpURLConnection) url.openConnection();
+                urlConnection.setRequestMethod("GET");
+                urlConnection.connect();
 
-            reader = new BufferedReader(new InputStreamReader(inputStream));
-            String line;
-            while ((line = reader.readLine()) != null) {
-                buffer.append(line);
-                buffer.append("\n");
-            }
-
-            if (buffer.length() == 0) {
-                return;
-            }
-            bookJsonString = buffer.toString();
-        } catch (Exception e) {
-            Log.e(LOG_TAG, "Error ", e);
-        } finally {
-            if (urlConnection != null) {
-                urlConnection.disconnect();
-            }
-            if (reader != null) {
-                try {
-                    reader.close();
-                } catch (final IOException e) {
-                    Log.e(LOG_TAG, "Error closing stream", e);
+                InputStream inputStream = urlConnection.getInputStream();
+                StringBuffer buffer = new StringBuffer();
+                if (inputStream == null) {
+                    return;
                 }
-            }
 
-        }
+                reader = new BufferedReader(new InputStreamReader(inputStream));
+                String line;
+                while ((line = reader.readLine()) != null) {
+                    buffer.append(line);
+                    buffer.append("\n");
+                }
+
+                if (buffer.length() == 0) {
+                    return;
+                }
+                bookJsonString = buffer.toString();
+            }
+            else{
+                Intent networkIntent = new Intent();
+                networkIntent.setAction(MainActivity.NETWORK_NOT_FOUND_EVENT);
+                networkIntent.putExtra(MainActivity.NETWORK_NOT_FOUND_KEY, getString(R.string.network_not_found_label));
+                LocalBroadcastManager.getInstance(getApplicationContext()).sendBroadcast(networkIntent);    //Sends Broadcast when no network is found.
+                return;
+            }
+            }catch(Exception e){
+                Log.e(LOG_TAG, "Error ", e);
+            }finally{
+                if (urlConnection != null) {
+                    urlConnection.disconnect();
+                }
+                if (reader != null) {
+                    try {
+                        reader.close();
+                    } catch (final IOException e) {
+                        Log.e(LOG_TAG, "Error closing stream", e);
+                    }
+                }
+
+            }
 
         final String ITEMS = "items";
 
@@ -162,9 +175,10 @@ public class BookService extends IntentService {
             if(bookJson.has(ITEMS)){
                 bookArray = bookJson.getJSONArray(ITEMS);
             }else{
-                Intent messageIntent = new Intent(MainActivity.MESSAGE_EVENT);
+                Intent messageIntent = new Intent();
+                messageIntent.setAction(MainActivity.MESSAGE_EVENT);
                 messageIntent.putExtra(MainActivity.MESSAGE_KEY,getResources().getString(R.string.not_found));
-                LocalBroadcastManager.getInstance(getApplicationContext()).sendBroadcast(messageIntent);
+                LocalBroadcastManager.getInstance(getApplicationContext()).sendBroadcast(messageIntent);    //Sends Broadcast when no book is found.
                 return;
             }
 
@@ -200,6 +214,18 @@ public class BookService extends IntentService {
             Log.e(LOG_TAG, "Error ", e);
         }
     }
+
+    private boolean isNetworkAvailable(){
+        ConnectivityManager cm = (ConnectivityManager) this.getApplicationContext().getSystemService(CONNECTIVITY_SERVICE);
+        NetworkInfo networkInfo = cm.getActiveNetworkInfo();
+        if(networkInfo != null){
+            return networkInfo.isConnectedOrConnecting();
+        }
+        else{
+            return false;
+        }
+    }
+
 
     private void writeBackBook(String ean, String title, String subtitle, String desc, String imgUrl) {
         ContentValues values= new ContentValues();
