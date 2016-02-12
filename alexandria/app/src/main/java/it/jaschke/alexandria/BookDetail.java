@@ -65,6 +65,10 @@ public class BookDetail extends Fragment implements LoaderManager.LoaderCallback
         return rootView;
     }
 
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+    }
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
@@ -72,6 +76,19 @@ public class BookDetail extends Fragment implements LoaderManager.LoaderCallback
 
         MenuItem menuItem = menu.findItem(R.id.action_share);
         shareActionProvider = (ShareActionProvider) MenuItemCompat.getActionProvider(menuItem);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+    }
+
+    @Override
+    public void onPrepareOptionsMenu(Menu menu) {
+        super.onPrepareOptionsMenu(menu);
+//        MenuItem menuItem = menu.findItem(R.id.action_share);
+//        shareActionProvider = (ShareActionProvider) MenuItemCompat.getActionProvider(menuItem);
     }
 
     @Override
@@ -99,7 +116,8 @@ public class BookDetail extends Fragment implements LoaderManager.LoaderCallback
         shareIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_DOCUMENT);
         shareIntent.setType("text/plain");
         shareIntent.putExtra(Intent.EXTRA_TEXT, getString(R.string.share_text)+bookTitle);
-        shareActionProvider.setShareIntent(shareIntent);
+        if(shareActionProvider != null)
+            shareActionProvider.setShareIntent(shareIntent);
 
         String bookSubTitle = data.getString(data.getColumnIndex(AlexandriaContract.BookEntry.SUBTITLE));
         ((TextView) rootView.findViewById(R.id.fullBookSubTitle)).setText(bookSubTitle);

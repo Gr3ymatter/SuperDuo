@@ -38,7 +38,8 @@ public class AddBook extends Fragment implements LoaderManager.LoaderCallbacks<C
     private String mScanContents = "Contents:";
     public static final int ISBN_REQUEST = 2;
 
-
+    private boolean saved = false;
+    private final String BOOK_SAVE_STATE = "Book_Key";
 
     public AddBook(){
     }
@@ -50,6 +51,7 @@ public class AddBook extends Fragment implements LoaderManager.LoaderCallbacks<C
             outState.putString(EAN_CONTENT, ean.getText().toString());
         }
     }
+
 
     @Override
     public View onCreateView(final LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -76,7 +78,7 @@ public class AddBook extends Fragment implements LoaderManager.LoaderCallbacks<C
                     ean="978"+ean;
                 }
                 if(ean.length()<13){
-                    clearFields();
+                  //  clearFields();
                     return;
                 }
                 //Once we have an ISBN, start a book intent
@@ -98,11 +100,6 @@ public class AddBook extends Fragment implements LoaderManager.LoaderCallbacks<C
                 // are using an external app.
                 //when you're done, remove the toast below.
                 Context context = getActivity();
-                CharSequence text = "This button should let you scan a book for its barcode!";
-                int duration = Toast.LENGTH_SHORT;
-                Toast toast = Toast.makeText(context, text, duration);
-                toast.show();
-
                 Intent startActivityIntent = new Intent(context, CameraActivity.class);
                 startActivityForResult(startActivityIntent, ISBN_REQUEST);
 
@@ -113,6 +110,8 @@ public class AddBook extends Fragment implements LoaderManager.LoaderCallbacks<C
             @Override
             public void onClick(View view) {
                 ean.setText("");
+                Toast.makeText(getActivity(), "Book Added",Toast.LENGTH_SHORT).show();
+                clearFields();
             }
         });
 
@@ -123,13 +122,18 @@ public class AddBook extends Fragment implements LoaderManager.LoaderCallbacks<C
                 bookIntent.putExtra(BookService.EAN, ean.getText().toString());
                 bookIntent.setAction(BookService.DELETE_BOOK);
                 getActivity().startService(bookIntent);
-                ean.setText("");
+                ean.setText(null);
+                clearFields();
+                //TODO Put This in Strings
+                Toast.makeText(getActivity(), "Book Discarded",Toast.LENGTH_SHORT).show();
+
             }
         });
 
         if(savedInstanceState!=null){
             ean.setText(savedInstanceState.getString(EAN_CONTENT));
             ean.setHint("");
+            saved = savedInstanceState.getBoolean(BOOK_SAVE_STATE);
         }
 
         return rootView;
@@ -192,7 +196,7 @@ public class AddBook extends Fragment implements LoaderManager.LoaderCallbacks<C
 
     }
 
-    private void clearFields(){
+    public void clearFields(){
         ((TextView) rootView.findViewById(R.id.bookTitle)).setText("");
         ((TextView) rootView.findViewById(R.id.bookSubTitle)).setText("");
         ((TextView) rootView.findViewById(R.id.authors)).setText("");

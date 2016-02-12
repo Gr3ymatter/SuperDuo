@@ -43,6 +43,10 @@ public class MainActivity extends ActionBarActivity implements NavigationDrawerF
     public static final String NETWORK_NOT_FOUND_KEY = "NETWORK_NOT_FOUND_EXTRA";
     public static final String NETWORK_NOT_FOUND_EVENT = "NETWORK_NOT_FOUND_EVENT";
 
+    private AddBook addBook;
+
+    private static final String ADDBOOK_KEY = "addbook";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -67,7 +71,10 @@ public class MainActivity extends ActionBarActivity implements NavigationDrawerF
 
         // Set up the drawer.
         navigationDrawerFragment.setUp(R.id.navigation_drawer,
-                    (DrawerLayout) findViewById(R.id.drawer_layout));
+                (DrawerLayout) findViewById(R.id.drawer_layout));
+
+        if(savedInstanceState != null)
+           addBook = (AddBook)(getSupportFragmentManager().getFragment(savedInstanceState, ADDBOOK_KEY));
     }
 
     @Override
@@ -83,6 +90,7 @@ public class MainActivity extends ActionBarActivity implements NavigationDrawerF
                 break;
             case 1:
                 nextFragment = new AddBook();
+                addBook = (AddBook)nextFragment;
                 break;
             case 2:
                 nextFragment = new About();
@@ -107,6 +115,12 @@ public class MainActivity extends ActionBarActivity implements NavigationDrawerF
         actionBar.setTitle(title);
     }
 
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        if(addBook != null)
+            getSupportFragmentManager().putFragment(outState, ADDBOOK_KEY, addBook);
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -165,7 +179,9 @@ public class MainActivity extends ActionBarActivity implements NavigationDrawerF
         @Override
         public void onReceive(Context context, Intent intent) {
             if(intent.getAction().equals(MainActivity.MESSAGE_EVENT)){
-                Toast.makeText(MainActivity.this, intent.getStringExtra(MESSAGE_KEY), Toast.LENGTH_LONG).show();
+                Toast.makeText(MainActivity.this, intent.getStringExtra(MESSAGE_KEY), Toast.LENGTH_SHORT).show();
+                if(addBook != null)
+                    addBook.clearFields();
             }
             if(intent.getAction().equals(MainActivity.NETWORK_NOT_FOUND_EVENT)){
                 Toast.makeText(MainActivity.this, intent.getStringExtra(NETWORK_NOT_FOUND_KEY),Toast.LENGTH_LONG).show();
