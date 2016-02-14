@@ -11,8 +11,8 @@
                     android:fillViewport="false"
                     android:layout_weight="1">
 
-            <RelativeLayout
-                android:orientation="horizontal"
+            <LinearLayout
+                android:orientation="vertical"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal|top">
@@ -103,7 +103,7 @@
                     android:layout_alignEnd="@+id/fullBookTitle"/>
 
 
-            </RelativeLayout>
+            </LinearLayout>
 
         </ScrollView>
 

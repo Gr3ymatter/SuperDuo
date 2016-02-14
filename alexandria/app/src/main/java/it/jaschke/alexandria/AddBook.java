@@ -110,7 +110,7 @@ public class AddBook extends Fragment implements LoaderManager.LoaderCallbacks<C
             @Override
             public void onClick(View view) {
                 ean.setText("");
-                Toast.makeText(getActivity(), "Book Added",Toast.LENGTH_SHORT).show();
+                Toast.makeText(getActivity(), getString(R.string.book_added),Toast.LENGTH_SHORT).show();
                 clearFields();
             }
         });
@@ -125,7 +125,7 @@ public class AddBook extends Fragment implements LoaderManager.LoaderCallbacks<C
                 ean.setText(null);
                 clearFields();
                 //TODO Put This in Strings
-                Toast.makeText(getActivity(), "Book Discarded",Toast.LENGTH_SHORT).show();
+                Toast.makeText(getActivity(), getString(R.string.book_removed), Toast.LENGTH_SHORT).show();
 
             }
         });
@@ -175,9 +175,12 @@ public class AddBook extends Fragment implements LoaderManager.LoaderCallbacks<C
         ((TextView) rootView.findViewById(R.id.bookSubTitle)).setText(bookSubTitle);
 
         String authors = data.getString(data.getColumnIndex(AlexandriaContract.AuthorEntry.AUTHOR));
-        String[] authorsArr = authors.split(",");
-        ((TextView) rootView.findViewById(R.id.authors)).setLines(authorsArr.length);
-        ((TextView) rootView.findViewById(R.id.authors)).setText(authors.replace(",","\n"));
+        if(authors != null){
+            String[] authorsArr = authors.split(",");
+            ((TextView) rootView.findViewById(R.id.authors)).setLines(authorsArr.length);
+            ((TextView) rootView.findViewById(R.id.authors)).setText(authors.replace(",","\n"));
+        }
+
         String imgUrl = data.getString(data.getColumnIndex(AlexandriaContract.BookEntry.IMAGE_URL));
         if(Patterns.WEB_URL.matcher(imgUrl).matches()){
             new DownloadImage((ImageView) rootView.findViewById(R.id.bookCover)).execute(imgUrl);
@@ -216,6 +219,11 @@ public class AddBook extends Fragment implements LoaderManager.LoaderCallbacks<C
             }
         }
 
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
     }
 
     @Override

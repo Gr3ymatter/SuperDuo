@@ -83,6 +83,13 @@ public class MainActivity extends ActionBarActivity implements NavigationDrawerF
         FragmentManager fragmentManager = getSupportFragmentManager();
         Fragment nextFragment;
 
+        Fragment detailFragment = fragmentManager.findFragmentById(R.id.container);
+
+
+        if(detailFragment instanceof BookDetail){
+            fragmentManager.popBackStack();
+        }
+
         switch (position){
             default:
             case 0:
@@ -118,7 +125,7 @@ public class MainActivity extends ActionBarActivity implements NavigationDrawerF
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        if(addBook != null)
+        if(addBook != null && addBook.isAdded())
             getSupportFragmentManager().putFragment(outState, ADDBOOK_KEY, addBook);
     }
 
@@ -158,20 +165,22 @@ public class MainActivity extends ActionBarActivity implements NavigationDrawerF
 
     @Override
     public void onItemSelected(String ean) {
-        Bundle args = new Bundle();
-        args.putString(BookDetail.EAN_KEY, ean);
 
-        BookDetail fragment = new BookDetail();
-        fragment.setArguments(args);
+            Bundle args = new Bundle();
+            args.putString(BookDetail.EAN_KEY, ean);
 
-        int id = R.id.container;
-        if(findViewById(R.id.right_container) != null){
-            id = R.id.right_container;
-        }
-        getSupportFragmentManager().beginTransaction()
-                .replace(id, fragment)
-                .addToBackStack("Book Detail")
-                .commit();
+            BookDetail fragment = new BookDetail();
+            fragment.setArguments(args);
+
+            int id = R.id.container;
+            if (findViewById(R.id.right_container) != null) {
+               id = R.id.right_container;
+            }
+            getSupportFragmentManager().beginTransaction()
+                    .replace(id, fragment, "Detail")
+                    .addToBackStack("Book Detail")
+                    .commit();
+
 
     }
 
@@ -207,5 +216,16 @@ public class MainActivity extends ActionBarActivity implements NavigationDrawerF
         super.onBackPressed();
     }
 
+    @Override
+    protected void onPause() {
+        super.onPause();
 
+        // Needed to be moved here as the OnPause of the BookDetail Activity was conflicting with the MainActivity.
+        // Since the main activity gets recreated first, the onPause method of the fragment would popoff items set by the main activity.
+        if(MainActivity.IS_TABLET && findViewById(R.id.right_container)==null){
+       getSupportFragmentManager().popBackStack();
+//            getActivity().getSupportFragmentManager().popBackStack();
+        }
+
+    }
 }
