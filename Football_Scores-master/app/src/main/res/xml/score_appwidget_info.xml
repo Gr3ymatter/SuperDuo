@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<appwidget-provider xmlns:android="http://schemas.android.com/apk/res/android"
+    android:minHeight="@dimen/score_single_default_height"
+    android:minResizeHeight="@dimen/score_single_min_resize_height"
+    android:minResizeWidth="@dimen/score_single_min_resize_width"
+    android:minWidth="@dimen/score_single_default_width"
+    android:resizeMode="horizontal"
+    android:updatePeriodMillis="0"
+    android:previewImage="@drawable/ic_launcher"
+    android:initialLayout="@layout/score_single_layout"
+    >
+</appwidget-provider>

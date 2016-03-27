@@ -28,6 +28,17 @@ public class ScoresProvider extends ContentProvider
             DatabaseContract.scores_table.MATCH_ID + " = ?";
 
 
+    public static final int MATCH_ID = 0;
+    public static final int MATCH_TIME = 2;
+    public static final int MATCH_HOME_TEAM = 3;
+    public static final int MATCH_AWAY_TEAM = 4;
+    public static final int MATCH_LEAGE = 5;
+    public static final int MATCH_HOME_GOALS = 6;
+    public static final int MATCH_AWAY_GOALS = 7;
+    public static final int MATCH_DAY = 8;
+
+
+
     static UriMatcher buildUriMatcher() {
         final UriMatcher matcher = new UriMatcher(UriMatcher.NO_MATCH);
         final String authority = DatabaseContract.BASE_CONTENT_URI.toString();

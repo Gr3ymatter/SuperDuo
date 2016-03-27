@@ -4,13 +4,14 @@
 
     <uses-permission
         android:name="android.permission.INTERNET"
-        android:maxSdkVersion="22" />
+         />
 
     <application
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
-        android:theme="@style/AppTheme" >
+        android:theme="@style/AppTheme"
+        android:supportsRtl="true">
         <activity
             android:name=".MainActivity"
             android:label="@string/app_name" >
@@ -20,10 +21,42 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        
+        <receiver android:name=".service.ScoreAppWidgetProvider">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE"/>
+                <action android:name="barqsoft.footballscores.service.ACTION_DATA_UPDATE"/>
+            </intent-filter>
+
+            <meta-data android:name="android.appwidget.provider"
+                android:resource="@xml/score_appwidget_info"></meta-data>
+
+        </receiver>
+
+        <service android:name=".service.WidgetIntentService"/>
+
+        <receiver android:name=".service.ScoreDetailAppWidgetProvider"
+            android:label="@string/title_widget_scores"
+            android:enabled="true"
+            >
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE"/>
+                <action android:name="barqsoft.footballscores.service.ACTION_DATA_UPDATE"/>
+            </intent-filter>
+            <meta-data android:name="android.appwidget.provider"
+                android:resource="@xml/score_details_appwidget_info"></meta-data>
+        </receiver>
+
+        <service android:name=".service.DetailWidgetRemoteViewService"
+            android:enabled="true"
+            android:exported="false"
+            android:permission="android.permission.BIND_REMOTEVIEWS"
+            />
 
         <provider
             android:name=".ScoresProvider"
             android:authorities="barqsoft.footballscores" />
+
 
         <activity
             android:name=".AboutActivity"

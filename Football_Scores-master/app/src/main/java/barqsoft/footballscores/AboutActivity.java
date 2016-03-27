@@ -10,6 +10,19 @@ import android.view.ViewGroup;
 
 public class AboutActivity extends ActionBarActivity {
 
+    /**
+     * Issues:
+     * 1) Football scores not displayed in widget
+     * 2) Lacks content descriptions for all buttonsw
+     * 3) Does not support mirroring
+     *
+     * Extras:
+     * 1) Strings should be in strings xml.
+     * 2) Should support a collection widget.
+     *
+     **/
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
