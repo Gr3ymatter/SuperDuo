@@ -188,6 +188,7 @@ public class myFetchService extends IntentService
 
             //ContentValues to be inserted
             Vector<ContentValues> values = new Vector <ContentValues> (matches.length());
+            Log.d(LOG_TAG, "Number of Matches = " + matches.length());
             for(int i = 0;i < matches.length();i++)
             {
 
@@ -203,7 +204,16 @@ public class myFetchService extends IntentService
                         League.equals(SERIE_A)             ||
                         League.equals(BUNDESLIGA1)         ||
                         League.equals(BUNDESLIGA2)         ||
-                        League.equals(PRIMERA_DIVISION)     )
+                        League.equals(PRIMERA_DIVISION)    ||
+                        League.equals(LIGUE1)              ||
+                        League.equals(LIGUE2)              ||
+                        League.equals(SEGUNDA_DIVISION)    ||
+                        League.equals(PRIMERA_LIGA)        ||
+                        League.equals(Bundesliga3)         ||
+                        League.equals(EREDIVISIE)          ||
+                        League.equals(CHAMPIONS_LEGUE)     ||
+                        League.equals(LEAGUE_ONE)
+                )
                 {
                     match_id = match_data.getJSONObject(LINKS).getJSONObject(SELF).
                             getString("href");

@@ -21,6 +21,7 @@
     <string name="semi_final">Semi Final</string>
     <string name="final_text">Final</string>
     <string name="share_text">Share</string>
+    <string name="share_matches_text">Share Match Information</string>
     <string name="about">About</string>
     <string name="title_activity_about">AboutActivity</string>
     <string name="about_text">
@@ -39,8 +40,8 @@
     <string name="a11y_scores_readout">Match Between: <xliff:g id="hometeam">%1$s</xliff:g> and  <xliff:g id="awayteam">%2$s</xliff:g>. Score: <xliff:g id="hometeamscore">%3$s</xliff:g> vs <xliff:g id="awayteamscore">%4$s</xliff:g> at <xliff:g id="time">%5$s</xliff:g></string>
     <string name="title_widget_scores">Todays Football Scores</string>
     <string name="empty_list">No Data Available</string>
-
+    <string name="leagueName">League</string>
     <string name="widget_text">This is a widget probably.</string>
-    <string name="api_key">"Enter API Key Here"</string>
+    <string name="api_key">"Enter Api Key Here"</string>
     <string name="dummy_data">{\"timeFrameStart\":\"2015-06-18\",\"timeFrameEnd\":\"2015-06-19\",\"count\":1,\"fixtures\":[{\"_links\":{\"self\":{\"href\":\"http://api.football-data.org/alpha/fixtures/140514\"},\"soccerseason\":{\"href\":\"http://api.football-data.org/alpha/soccerseasons/357\"},\"homeTeam\":{\"href\":\"http://api.football-data.org/alpha/teams/275\"},\"awayTeam\":{\"href\":\"http://api.football-data.org/alpha/teams/263\"}},\"date\":\"2015-06-19T22:00:00Z\",\"status\":\"FINISHED\",\"matchday\":42,\"homeTeamName\":\"TESTING1\",\"awayTeamName\":\"TESTING2\",\"result\":{\"goalsHomeTeam\":2,\"goalsAwayTeam\":4}},{\"_links\":{\"self\":{\"href\":\"http://api.football-data.org/alpha/fixtures/140514\"},\"soccerseason\":{\"href\":\"http://api.football-data.org/alpha/soccerseasons/357\"},\"homeTeam\":{\"href\":\"http://api.football-data.org/alpha/teams/275\"},\"awayTeam\":{\"href\":\"http://api.football-data.org/alpha/teams/263\"}},\"date\":\"2015-06-19T22:00:00Z\",\"status\":\"FINISHED\",\"matchday\":42,\"homeTeamName\":\"TESTING1\",\"awayTeamName\":\"TESTING2\",\"result\":{\"goalsHomeTeam\":2,\"goalsAwayTeam\":4}},{\"_links\":{\"self\":{\"href\":\"http://api.football-data.org/alpha/fixtures/140514\"},\"soccerseason\":{\"href\":\"http://api.football-data.org/alpha/soccerseasons/357\"},\"homeTeam\":{\"href\":\"http://api.football-data.org/alpha/teams/275\"},\"awayTeam\":{\"href\":\"http://api.football-data.org/alpha/teams/263\"}},\"date\":\"2015-06-19T22:00:00Z\",\"status\":\"FINISHED\",\"matchday\":42,\"homeTeamName\":\"TESTING1\",\"awayTeamName\":\"TESTING2\",\"result\":{\"goalsHomeTeam\":2,\"goalsAwayTeam\":4}},{\"_links\":{\"self\":{\"href\":\"http://api.football-data.org/alpha/fixtures/140514\"},\"soccerseason\":{\"href\":\"http://api.football-data.org/alpha/soccerseasons/357\"},\"homeTeam\":{\"href\":\"http://api.football-data.org/alpha/teams/275\"},\"awayTeam\":{\"href\":\"http://api.football-data.org/alpha/teams/263\"}},\"date\":\"2015-06-19T22:00:00Z\",\"status\":\"FINISHED\",\"matchday\":42,\"homeTeamName\":\"TESTING1\",\"awayTeamName\":\"TESTING2\",\"result\":{\"goalsHomeTeam\":2,\"goalsAwayTeam\":4}},{\"_links\":{\"self\":{\"href\":\"http://api.football-data.org/alpha/fixtures/140514\"},\"soccerseason\":{\"href\":\"http://api.football-data.org/alpha/soccerseasons/357\"},\"homeTeam\":{\"href\":\"http://api.football-data.org/alpha/teams/275\"},\"awayTeam\":{\"href\":\"http://api.football-data.org/alpha/teams/263\"}},\"date\":\"2015-06-19T22:00:00Z\",\"status\":\"FINISHED\",\"matchday\":42,\"homeTeamName\":\"TESTING1\",\"awayTeamName\":\"TESTING2\",\"result\":{\"goalsHomeTeam\":2,\"goalsAwayTeam\":4}}]}</string>
 </resources>
